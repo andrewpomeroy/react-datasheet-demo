@@ -36,6 +36,14 @@ html,
   background-color: white;
 }
 
-.data-grid-container .data-grid .cell > input {
+.data-grid-container .data-grid .cell > input,
+.data-grid-container .data-grid .cell.selected > .input-container {
   height: 100%;
+}
+
+.data-grid-container .data-grid .cell .value-viewer,
+.data-grid-container .data-grid .cell .data-editor {
+  height: calc(100% - 6px);
+  width: calc(100% - 8px);
+  text-align: inherit;
 }
