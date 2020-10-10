@@ -12,7 +12,8 @@
     "react": "^16.13.1",
     "react-datasheet": "^1.4.8",
     "react-dom": "^16.13.1",
-    "react-scripts": "3.4.3"
+    "react-scripts": "3.4.3",
+    "yup": "^0.29.3"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -36,6 +37,7 @@
     ]
   },
   "devDependencies": {
-    "eslint-plugin-prettier": "^3.1.4"
+    "eslint-plugin-prettier": "^3.1.4",
+    "prettier": "^2.1.2"
   }
 }

@@ -1,12 +1,54 @@
-import React, { useState } from 'react';
-import ReactDataSheet from 'react-datasheet';
-import faker from 'faker';
-import './App.css';
-import 'react-datasheet/lib/react-datasheet.css';
-import CellValueDisplay from './components/CellValueDisplay';
-import HeaderCellValueDisplay from './components/HeaderCellValueDisplay';
+import React, { useState } from "react";
+import ReactDataSheet from "react-datasheet";
+import faker from "faker";
+import "./App.css";
+import "react-datasheet/lib/react-datasheet.css";
+import CellValueDisplay from "./components/CellValueDisplay";
+import HeaderCellValueDisplay from "./components/HeaderCellValueDisplay";
 
-const cellRenderer = ({ children, row, className,
+const validators = {
+  number: (value) =>
+    value &&
+    parseInt(value.trim ? value.trim() : value) ===
+      (value.trim ? value.trim() : value),
+  string: (value) => true,
+  required: (value) => value && (value.trim ? value.trim() : value).length,
+};
+
+const columnDefs = [
+  {
+    name: "Name",
+    id: "name",
+    inputType: "string",
+    isRequired: true,
+    makeMockEntry: faker.name.findName,
+  },
+  {
+    name: "Number",
+    id: "number",
+    inputType: "number",
+    makeMockEntry: faker.random.number,
+  },
+  {
+    name: "Company",
+    id: "company",
+    inputType: "string",
+    makeMockEntry: faker.company.companyName,
+  },
+  {
+    name: "Department",
+    id: "department",
+    inputType: "string",
+    makeMockEntry: faker.commerce.department,
+  },
+];
+
+const cellRenderer = ({
+  children,
+  row,
+  col,
+  cell,
+  className,
   style,
   selected,
   editing,
@@ -15,10 +57,19 @@ const cellRenderer = ({ children, row, className,
   onMouseDown,
   onMouseOver,
   onDoubleClick,
-  onContextMenu }) => {
-  const DisplayComponent = row === 0 ? HeaderCellValueDisplay : CellValueDisplay;
+  onContextMenu,
+}) => {
+  let _validators = [];
+  const columnDef = columnDefs[col];
+  if (validators[columnDef.inputType])
+    _validators.push(validators[columnDef.inputType]);
+  if (columnDef.isRequired) _validators.push(validators.required);
+  const isValid = _validators.every((x) => x(cell.value));
+  const DisplayComponent =
+    row === 0 ? HeaderCellValueDisplay : CellValueDisplay;
+
   return (
-    <td 
+    <td
       className={className}
       style={style}
       selected={selected}
@@ -29,65 +80,36 @@ const cellRenderer = ({ children, row, className,
       onMouseOver={onMouseOver}
       onDoubleClick={onDoubleClick}
       onContextMenu={onContextMenu}
-      >
-      <DisplayComponent>{children}</DisplayComponent>
+    >
+      <DisplayComponent isValid={isValid}>
+        {children}
+        {/* {cell.value ? children : <span>&nbsp;</span>} */}
+      </DisplayComponent>
     </td>
   );
-}
-
+};
 
 function App() {
+  const makeRow = (values) => values.map((x) => ({ value: x }));
 
-  const columnDefs = [
-    {
-      name: "Name",
-      id: "name",
-      inputType: "string",
-      makeMockEntry: faker.name.findName
-    },
-    {
-      name: "Number",
-      id: "number",
-      inputType: "number",
-      makeMockEntry: faker.random.number
-    },
-    {
-      name: "Company",
-      id: "company",
-      inputType: "string",
-      makeMockEntry: faker.company.companyName
-    },
-    {
-      name: "Department",
-      id: "department",
-      inputType: "string",
-      makeMockEntry: faker.commerce.department
-    },
-  ];
-  const makeRow = (values) => values.map(x => ({value: x}));
-  // const initialValues = [
-  //   [{value: "Andrew"}, {value: 120}],
-  //   [{value: "Alice"}, {value: 4000}],
-  // ]
+  const makeMockDataRow = () =>
+    makeRow(columnDefs.map((col) => col.makeMockEntry()));
 
-  const makeMockDataRow = () => makeRow(
-    columnDefs.map(col => col.makeMockEntry())
-  )
-
-  const range = int => [...Array(int).keys()];
+  const range = (int) => [...Array(int).keys()];
 
   const initialValues = range(100).map(makeMockDataRow);
 
   const gridInitialState = [
-    [...columnDefs.map(x => ({
-      // isHeaderCell: true,
-      readOnly: true,
-      className: 'header-cell',
-      value: x.name,
-    }))],
-    ...initialValues
-  ]
-
+    [
+      ...columnDefs.map((x) => ({
+        // isHeaderCell: true,
+        readOnly: true,
+        className: "header-cell",
+        value: x.name,
+      })),
+    ],
+    ...initialValues,
+  ];
 
   const [gridState, setGridState] = useState(gridInitialState);
 
@@ -98,11 +120,10 @@ function App() {
           <div className="Column">
             <ReactDataSheet
               data={gridState}
-              valueRenderer={cell => cell.value}
+              valueRenderer={(cell) => cell.value}
               cellRenderer={cellRenderer}
-              // valueRenderer={valueRenderer}
-              onCellsChanged={changes => {
-                const grid = gridState.map(row => [...row]);
+              onCellsChanged={(changes) => {
+                const grid = gridState.map((row) => [...row]);
                 changes.forEach(({ cell, row, col, value }) => {
                   grid[row][col] = { ...grid[row][col], value };
                 });
