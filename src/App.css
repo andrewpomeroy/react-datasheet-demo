@@ -26,12 +26,14 @@ html,
   margin: 0 0.5rem;
 }
 
-.data-grid {
-  background-color: white;
+.data-grid-container {
+  /* max-height: 360px;
+  overflow: auto;
+  display: block; */
 }
 
-.cell {
-  padding: 0.125rem 0.25rem;
+.data-grid {
+  background-color: white;
 }
 
 .header-cell {
