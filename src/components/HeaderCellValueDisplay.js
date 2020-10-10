@@ -10,7 +10,7 @@ const HeaderCellValueDisplayStyle = styled(CellValueDisplay)`
 
 const HeaderCellValueDisplay = ({ isValid, children, ...props }) => {
   return (
-    <HeaderCellValueDisplayStyle isValid={true} {...props}>
+    <HeaderCellValueDisplayStyle isValid={true} align="center" {...props}>
       {children}
     </HeaderCellValueDisplayStyle>
   );

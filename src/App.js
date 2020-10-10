@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import ReactDataSheet from "react-datasheet";
 import faker from "faker";
-import "./App.css";
 import "react-datasheet/lib/react-datasheet.css";
+import "./App.css";
 import CellValueDisplay from "./components/CellValueDisplay";
 import HeaderCellValueDisplay from "./components/HeaderCellValueDisplay";
 
@@ -67,7 +67,8 @@ const cellRenderer = ({
   const isValid = _validators.every((x) => x(cell.value));
   const DisplayComponent =
     row === 0 ? HeaderCellValueDisplay : CellValueDisplay;
-
+  const align =
+    row === 0 ? "center" : columnDef.inputType === "number" ? "right" : "left";
   return (
     <td
       className={className}
@@ -81,10 +82,14 @@ const cellRenderer = ({
       onDoubleClick={onDoubleClick}
       onContextMenu={onContextMenu}
     >
-      <DisplayComponent isValid={isValid}>
-        {children}
-        {/* {cell.value ? children : <span>&nbsp;</span>} */}
-      </DisplayComponent>
+      {editing ? (
+        <>{children}</>
+      ) : (
+        <DisplayComponent isValid={isValid} align={align}>
+          {children}
+          {/* {cell.value ? children : <span>&nbsp;</span>} */}
+        </DisplayComponent>
+      )}
     </td>
   );
 };
