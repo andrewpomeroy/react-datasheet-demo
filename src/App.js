@@ -5,6 +5,7 @@ import "react-datasheet/lib/react-datasheet.css";
 import "./App.css";
 import CellValueDisplay from "./components/CellValueDisplay";
 import HeaderCellValueDisplay from "./components/HeaderCellValueDisplay";
+import styled from "@emotion/styled";
 
 const validators = {
   number: (value) =>
@@ -43,6 +44,16 @@ const columnDefs = [
   },
 ];
 
+const InputContainer = styled.div`
+  height: 100%;
+  width: 100%;
+  input {
+    height: calc(100% - 6px);
+    width: ${(props) => props.width - 8}px;
+    text-align: ${(props) => props.align};
+  }
+`;
+
 const InnerCell = ({ isHeader, isValid, align, children, editing }) => {
   const ref = useRef();
   const [width, setWidth] = useState({});
@@ -58,9 +69,9 @@ const InnerCell = ({ isHeader, isValid, align, children, editing }) => {
   }, [editing]);
   const DisplayComponent = isHeader ? HeaderCellValueDisplay : CellValueDisplay;
   return editing ? (
-    <div className="input-container" style={{ width: width }}>
+    <InputContainer width={width} align={align}>
       {children}
-    </div>
+    </InputContainer>
   ) : (
     <DisplayComponent isValid={isValid} align={align} ref={ref}>
       {children}
