@@ -1,35 +1,51 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import ReactDataSheet from "react-datasheet";
 import cellRenderer from "./cellRenderer";
 import { useAppContext } from "../context/AppContext";
 
+const range = (int) => [...Array(int).keys()];
+
 const Spreadsheet = (props) => {
   const [appContext, appDispatch] = useAppContext();
+  const initialRows = range(15).map(makeMockDataRow);
 
-  useEffect(() => {}, [appContext]);
-
-  const makeRow = (values) => values.map((x) => ({ value: x }));
-
-  const makeMockDataRow = () =>
-    makeRow(appContext.columnDefs.map((col) => col.makeMockEntry()));
-
-  const range = (int) => [...Array(int).keys()];
-
-  const initialValues = range(100).map(makeMockDataRow);
-
-  const gridInitialState = [
-    [
-      ...appContext.columnDefs.map((x) => ({
+  const makeHeaderCells = useCallback((columnDefs) => {
+    return [
+      ...columnDefs.map((x) => ({
         // isHeaderCell: true,
         readOnly: true,
         className: "header-cell",
         value: x.name,
       })),
-    ],
-    ...initialValues,
-  ];
+    ];
+  }, []);
 
+  const gridInitialState = [
+    makeHeaderCells(appContext.columnDefs),
+    ...initialRows,
+  ];
   const [gridState, setGridState] = useState(gridInitialState);
+
+  useEffect(() => {
+    setGridState([
+      makeHeaderCells(appContext.columnDefs),
+      ...gridState.slice(1),
+    ]);
+    // eslint-disable-next-line
+  }, [appContext, makeHeaderCells]);
+
+  function makeRow(values) {
+    return values.map((x) => ({ value: x }));
+  }
+
+  function makeMockDataRow() {
+    return makeRow(
+      appContext.columnDefs.map((col) => {
+        if (col.makeMockEntry) return col.makeMockEntry();
+        else return null;
+      })
+    );
+  }
 
   return (
     <ReactDataSheet

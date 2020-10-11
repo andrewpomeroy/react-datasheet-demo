@@ -2,7 +2,7 @@ body,
 html,
 #root {
   display: flex;
-  flex-direction: folumn;
+  flex-direction: column;
   flex: 1;
   min-height: 100vh;
   /* min-width: 100vw; */
@@ -13,17 +13,30 @@ html,
   background-color: hsl(0, 0%, 94%);
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   justify-content: flex-start;
   padding: 40px 60px;
 }
+
+.GridContainer {
+  flex: 1;
+}
+
 .Columns {
   display: flex;
   align-items: flex-start;
   margin: 0 -0.5rem;
 }
+
 .Column {
   margin: 0 0.5rem;
+}
+
+.Column--grid {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .data-grid-container {

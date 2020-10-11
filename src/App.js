@@ -14,7 +14,7 @@ function App() {
             <div className="Column">
               <TableDefinitionControls />
             </div>
-            <div className="Column">
+            <div className="Column Column--grid">
               <Spreadsheet />
             </div>
           </div>

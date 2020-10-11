@@ -6,10 +6,7 @@ export const AppDispatchContext = React.createContext({});
 
 const changeColumnDefProp = (defs, changes) => {
   const record = defs.find((def) => def.id === changes.colId);
-  // console.log("changes", changes);
-  // console.log(defs, record);
   record[changes.propName] = changes.value;
-  // console.log(defs);
   return defs;
 };
 
@@ -71,10 +68,9 @@ export const AppContextProvider = (props) => {
 export const useAppState = () => {
   const context = React.useContext(AppStateContext);
   if (context === undefined) {
-    // throw new Error(
-    //   "AppStateContext must be used within an AppContextProvider"
-    // );
-    console.log("wat, AppStateContext", context);
+    throw new Error(
+      "AppStateContext must be used within an AppContextProvider"
+    );
   }
   return context;
 };
@@ -82,10 +78,9 @@ export const useAppState = () => {
 export const useAppDispatch = () => {
   const context = React.useContext(AppDispatchContext);
   if (context === undefined) {
-    // throw new Error(
-    //   "AppDispatchContext must be used within an AppContextProvider"
-    // );
-    console.log("wat, AppDispatchContext", context);
+    throw new Error(
+      "AppDispatchContext must be used within an AppContextProvider"
+    );
   }
   return context;
 };

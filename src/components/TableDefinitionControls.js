@@ -49,6 +49,7 @@ const TableDefinitionControls = (props) => {
   const handleNameChange = (event) => {
     changeColumnProp(event.target.dataset.colId, "name", event.target.value);
   };
+
   const handleTypeChange = (event) => {
     changeColumnProp(
       event.target.dataset.colId,
@@ -56,6 +57,7 @@ const TableDefinitionControls = (props) => {
       event.target.value
     );
   };
+
   const handleRequiredChange = (event) => {
     changeColumnProp(
       event.target.dataset.colId,
