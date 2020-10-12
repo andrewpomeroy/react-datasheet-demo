@@ -19,11 +19,16 @@ const appReducer = (state, action) => {
       };
     }
     case "ADD_COL": {
-      console.log(state);
       return {
         ...state,
         rows: state.rows.map((row) => [...row, " "]),
         columnDefs: [...state.columnDefs, NewColumnTemplate()],
+      };
+    }
+    case "SET_ROWS": {
+      return {
+        ...state,
+        rows: action.payload,
       };
     }
     default: {

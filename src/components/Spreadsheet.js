@@ -3,7 +3,7 @@ import ReactDataSheet from "react-datasheet";
 import cellRenderer from "./cellRenderer";
 import { useAppContext } from "../context/AppContext";
 
-const Spreadsheet = (props) => {
+const Spreadsheet = () => {
   const [appContext, appDispatch] = useAppContext();
 
   const makeHeaderCells = useCallback((columnDefs) => {
@@ -37,7 +37,7 @@ const Spreadsheet = (props) => {
         changes.forEach(({ cell, row, col, value }) => {
           grid[row][col] = { ...grid[row][col], value };
         });
-        setGridState(grid);
+        appDispatch({ type: "SET_ROWS", payload: grid.slice(1) });
       }}
     />
   );
