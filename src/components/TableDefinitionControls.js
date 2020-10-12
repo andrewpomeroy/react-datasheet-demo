@@ -18,6 +18,7 @@ const CtrlGroup = styled.div`
   /* background-color: rgba(255, 255, 255, 0.1); */
   background-color: rgba(0, 0, 0, 0.1);
 `;
+
 const Ctrl = styled.div`
   display: flex;
   align-items: center;
@@ -33,6 +34,12 @@ const Ctrl = styled.div`
   }
 `;
 
+const WideButton = styled.button`
+  width: 100%;
+  padding: 0.5em;
+  font-size: 16px;
+`;
+
 const TableDefinitionControls = (props) => {
   const appContext = useAppState();
   const appDispatch = useAppDispatch();
@@ -43,6 +50,12 @@ const TableDefinitionControls = (props) => {
     appDispatch({
       type: "CHANGE_COL_PROP",
       payload: { colId, propName, value },
+    });
+  };
+
+  const addNewColumn = () => {
+    appDispatch({
+      type: "ADD_COL",
     });
   };
 
@@ -105,13 +118,12 @@ const TableDefinitionControls = (props) => {
             </Ctrl>
           </CtrlGroup>
         ))}
+        <CtrlGroup>
+          <WideButton onClick={addNewColumn}>Add Column</WideButton>
+        </CtrlGroup>
       </div>
       <div>
-        {columnDefs.map((col) => (
-          <p>
-            <pre>{JSON.stringify(col, null, 2)}</pre>
-          </p>
-        ))}
+        <pre>{JSON.stringify(columnDefs, null, 2)}</pre>
       </div>
     </Container>
   );

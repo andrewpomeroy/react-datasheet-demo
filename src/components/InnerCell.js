@@ -32,6 +32,9 @@ const InnerCell = ({ row, col, cell, children, editing }) => {
   if (validators[columnDef.inputType])
     _validators.push(validators[columnDef.inputType]);
   if (columnDef.isRequired) _validators.push(validators.required);
+  // if (columnDef.inputType === "number") {
+  //   _validators.forEach((x) => console.log(x(cell.value)));
+  // }
   const isValid = _validators.every((x) => x(cell.value));
   const align = isHeader
     ? "center"

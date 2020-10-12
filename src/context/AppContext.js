@@ -18,40 +18,71 @@ const appReducer = (state, action) => {
         columnDefs: changeColumnDefProp(state.columnDefs, action.payload),
       };
     }
+    case "ADD_COL": {
+      console.log(state);
+      return {
+        ...state,
+        rows: state.rows.map((row) => [...row, " "]),
+        columnDefs: [...state.columnDefs, NewColumnTemplate()],
+      };
+    }
     default: {
       throw new Error(`Unhandled action type: ${action.type}`);
     }
   }
 };
 
+const columnDefs = [
+  {
+    name: "Name",
+    id: "name",
+    inputType: "string",
+    isRequired: true,
+    makeMockEntry: faker.name.findName,
+  },
+  {
+    name: "Number",
+    id: "number",
+    inputType: "number",
+    makeMockEntry: faker.random.number,
+  },
+  {
+    name: "Company",
+    id: "company",
+    inputType: "string",
+    makeMockEntry: faker.company.companyName,
+  },
+  {
+    name: "Department",
+    id: "department",
+    inputType: "string",
+    makeMockEntry: faker.commerce.department,
+  },
+];
+
+const range = (int) => [...Array(int).keys()];
+
+function makeMockDataRow() {
+  return columnDefs
+    .map((col) => {
+      if (col.makeMockEntry) return col.makeMockEntry();
+      else return null;
+    })
+    .map((val) => ({ value: val }));
+}
+
 const initialState = {
-  columnDefs: [
-    {
-      name: "Name",
-      id: "name",
-      inputType: "string",
-      isRequired: true,
-      makeMockEntry: faker.name.findName,
-    },
-    {
-      name: "Number",
-      id: "number",
-      inputType: "number",
-      makeMockEntry: faker.random.number,
-    },
-    {
-      name: "Company",
-      id: "company",
-      inputType: "string",
-      makeMockEntry: faker.company.companyName,
-    },
-    {
-      name: "Department",
-      id: "department",
-      inputType: "string",
-      makeMockEntry: faker.commerce.department,
-    },
-  ],
+  columnDefs,
+  rows: range(15).map(makeMockDataRow),
+};
+
+const NewColumnTemplate = () => {
+  const word = faker.random.word();
+  return {
+    name: [word.slice(0, 1).toUpperCase(), word.slice(1)].join(""),
+    id: word.trim().toLowerCase(),
+    inputType: "string",
+  };
 };
 
 export const AppContextProvider = (props) => {

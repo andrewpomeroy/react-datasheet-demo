@@ -3,16 +3,12 @@ import ReactDataSheet from "react-datasheet";
 import cellRenderer from "./cellRenderer";
 import { useAppContext } from "../context/AppContext";
 
-const range = (int) => [...Array(int).keys()];
-
 const Spreadsheet = (props) => {
   const [appContext, appDispatch] = useAppContext();
-  const initialRows = range(15).map(makeMockDataRow);
 
   const makeHeaderCells = useCallback((columnDefs) => {
     return [
       ...columnDefs.map((x) => ({
-        // isHeaderCell: true,
         readOnly: true,
         className: "header-cell",
         value: x.name,
@@ -22,30 +18,14 @@ const Spreadsheet = (props) => {
 
   const gridInitialState = [
     makeHeaderCells(appContext.columnDefs),
-    ...initialRows,
+    ...appContext.rows,
   ];
   const [gridState, setGridState] = useState(gridInitialState);
 
   useEffect(() => {
-    setGridState([
-      makeHeaderCells(appContext.columnDefs),
-      ...gridState.slice(1),
-    ]);
+    setGridState([makeHeaderCells(appContext.columnDefs), ...appContext.rows]);
     // eslint-disable-next-line
   }, [appContext, makeHeaderCells]);
-
-  function makeRow(values) {
-    return values.map((x) => ({ value: x }));
-  }
-
-  function makeMockDataRow() {
-    return makeRow(
-      appContext.columnDefs.map((col) => {
-        if (col.makeMockEntry) return col.makeMockEntry();
-        else return null;
-      })
-    );
-  }
 
   return (
     <ReactDataSheet
