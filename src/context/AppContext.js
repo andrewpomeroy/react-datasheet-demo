@@ -10,6 +10,10 @@ const changeColumnDefProp = (defs, changes) => {
   return defs;
 };
 
+function makeBlankRow(state) {
+  return state.columnDefs.map((x) => " ");
+}
+
 const appReducer = (state, action) => {
   switch (action.type) {
     case "CHANGE_COL_PROP": {
@@ -29,6 +33,12 @@ const appReducer = (state, action) => {
       return {
         ...state,
         rows: action.payload,
+      };
+    }
+    case "ADD_ROW": {
+      return {
+        ...state,
+        rows: [...state.rows, makeBlankRow(state)],
       };
     }
     default: {

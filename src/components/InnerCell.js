@@ -9,8 +9,10 @@ const InputContainer = styled.div`
   height: 100%;
   width: 100%;
   input {
-    height: calc(100% - 6px);
-    width: ${(props) => props.width - 8}px;
+    /* height: calc(100% - 6px); */
+    height: 100%;
+    /* width: ${(props) => props.width - 8}px; */
+    width: ${(props) => props.width}px;
     text-align: ${(props) => props.align};
   }
 `;

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState, useContext } from "react";
 import styled from "@emotion/styled";
 import { useAppState, useAppDispatch } from "../context/AppContext";
+import WideButton from "./WideButton";
 
 const Container = styled.div`
   /* background-color: #464646; */
@@ -32,12 +33,6 @@ const Ctrl = styled.div`
     opacity: 0.8;
     margin-right: 0.5em;
   }
-`;
-
-const WideButton = styled.button`
-  width: 100%;
-  padding: 0.5em;
-  font-size: 16px;
 `;
 
 const TableDefinitionControls = (props) => {
