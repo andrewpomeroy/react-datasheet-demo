@@ -17,7 +17,24 @@ const cellRenderer = ({
   onDoubleClick,
   onContextMenu,
 }) => {
-  return (
+  return row === 0 ? (
+    <th
+      className={className}
+      style={style}
+      selected={selected}
+      editing={editing}
+      updated={updated}
+      attributesRenderer={attributesRenderer}
+      onMouseDown={onMouseDown}
+      onMouseOver={onMouseOver}
+      onDoubleClick={onDoubleClick}
+      onContextMenu={onContextMenu}
+    >
+      <InnerCell row={row} col={col} cell={cell} editing={editing}>
+        {children}
+      </InnerCell>
+    </th>
+  ) : (
     <td
       className={className}
       style={style}
