@@ -118,7 +118,7 @@ const TableDefinitionControls = (props) => {
         </CtrlGroup>
       </div>
       <div>
-        <pre>{JSON.stringify(columnDefs, null, 2)}</pre>
+        <pre>{JSON.stringify(appContext.rows, null, 2)}</pre>
       </div>
     </Container>
   );

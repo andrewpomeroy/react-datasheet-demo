@@ -10,8 +10,12 @@ const changeColumnDefProp = (defs, changes) => {
   return defs;
 };
 
-function makeBlankRow(state) {
-  return state.columnDefs.map((x) => " ");
+function makeBlankCell() {
+  return { value: "" };
+}
+
+function makeBlankRow(colCount) {
+  return range(colCount).map(makeBlankCell);
 }
 
 const appReducer = (state, action) => {
@@ -38,7 +42,7 @@ const appReducer = (state, action) => {
     case "ADD_ROW": {
       return {
         ...state,
-        rows: [...state.rows, makeBlankRow(state)],
+        rows: [...state.rows, makeBlankRow(state.columnDefs.length)],
       };
     }
     default: {
