@@ -1,6 +1,10 @@
 import React from "react";
 import faker from "faker";
-import { changeColumnDefProp, makeBlankRow } from "../gridOperations";
+import {
+  changeColumnDefProp,
+  makeBlankRow,
+  makeBlankCell,
+} from "../gridOperations";
 
 const INIT_ROW_COUNT = 15;
 
@@ -18,7 +22,7 @@ const appReducer = (state, action) => {
     case "ADD_COL": {
       return {
         ...state,
-        rows: state.rows.map((row) => [...row, " "]),
+        rows: state.rows.map((row) => [...row, makeBlankCell()]),
         columnDefs: [...state.columnDefs, NewColumnTemplate()],
       };
     }
