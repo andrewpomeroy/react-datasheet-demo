@@ -3,6 +3,7 @@ import ReactDataSheet from "react-datasheet";
 import cellRenderer from "./cellRenderer";
 import { useAppContext } from "../context/AppContext";
 import WideButton from "./WideButton";
+import { makeBlankRow } from "../gridOperations";
 
 const Spreadsheet = () => {
   const [appContext, appDispatch] = useAppContext();
@@ -32,19 +33,33 @@ const Spreadsheet = () => {
     appDispatch({ type: "ADD_ROW" });
   }
 
+  function handleCellsChanged(changes, additions) {
+    const grid = gridState.map((row) => [...row]);
+    changes.forEach(({ cell, row, col, value }) => {
+      grid[row][col] = { ...grid[row][col], value };
+    });
+
+    // paste extended beyond end, so add a new row
+    additions &&
+      additions.forEach(({ cell, row, col, value }) => {
+        if (!grid[row]) {
+          grid[row] = makeBlankRow(appContext.columnDefs.length);
+        }
+        if (grid[row][col]) {
+          grid[row][col] = { ...grid[row][col], value };
+        }
+      });
+
+    appDispatch({ type: "SET_ROWS", payload: grid.slice(1) });
+  }
+
   return (
     <>
       <ReactDataSheet
         data={gridState}
         valueRenderer={(cell) => cell.value || "\u00a0"}
         cellRenderer={cellRenderer}
-        onCellsChanged={(changes) => {
-          const grid = gridState.map((row) => [...row]);
-          changes.forEach(({ cell, row, col, value }) => {
-            grid[row][col] = { ...grid[row][col], value };
-          });
-          appDispatch({ type: "SET_ROWS", payload: grid.slice(1) });
-        }}
+        onCellsChanged={handleCellsChanged}
       />
       <WideButton onClick={addRow} style={{ width: "auto", marginTop: "1rem" }}>
         Add Row

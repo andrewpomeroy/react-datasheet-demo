@@ -1,22 +1,11 @@
 import React from "react";
 import faker from "faker";
+import { changeColumnDefProp, makeBlankRow } from "../gridOperations";
+
+const INIT_ROW_COUNT = 15;
 
 export const AppStateContext = React.createContext({});
 export const AppDispatchContext = React.createContext({});
-
-const changeColumnDefProp = (defs, changes) => {
-  const record = defs.find((def) => def.id === changes.colId);
-  record[changes.propName] = changes.value;
-  return defs;
-};
-
-function makeBlankCell() {
-  return { value: "" };
-}
-
-function makeBlankRow(colCount) {
-  return range(colCount).map(makeBlankCell);
-}
 
 const appReducer = (state, action) => {
   switch (action.type) {
@@ -79,8 +68,6 @@ const columnDefs = [
   },
 ];
 
-const range = (int) => [...Array(int).keys()];
-
 function makeMockDataRow() {
   return columnDefs
     .map((col) => {
@@ -92,7 +79,7 @@ function makeMockDataRow() {
 
 const initialState = {
   columnDefs,
-  rows: range(15).map(makeMockDataRow),
+  rows: [...Array(INIT_ROW_COUNT).keys()].map(makeMockDataRow),
 };
 
 const NewColumnTemplate = () => {
