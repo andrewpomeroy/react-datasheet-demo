@@ -12,6 +12,11 @@ const InputContainer = styled.div`
     height: 100%;
     width: ${(props) => props.width}px;
     text-align: ${(props) => props.align};
+    /* position: fixed;
+    top: 50%;
+    left: 50%;
+    width: 80px;
+    height: 30px; */
   }
 `;
 
