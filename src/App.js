@@ -9,14 +9,12 @@ function App() {
   return (
     <AppContextProvider>
       <div className="App">
-        <div className="GridContainer">
-          <div className="Columns">
-            <div className="Column" style={{ maxWidth: 360 }}>
-              <TableDefinitionControls />
-            </div>
-            <div className="Column Column--grid">
-              <Spreadsheet />
-            </div>
+        <div className="Columns GridContainer">
+          <div className="Column" style={{ maxWidth: 360 }}>
+            <TableDefinitionControls />
+          </div>
+          <div className="Column Column--grid">
+            <Spreadsheet />
           </div>
         </div>
       </div>

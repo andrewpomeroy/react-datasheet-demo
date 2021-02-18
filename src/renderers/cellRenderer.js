@@ -16,10 +16,12 @@ const cellRenderer = ({
   onMouseOver,
   onDoubleClick,
   onContextMenu,
+  overflow,
 }) => {
   const attrs = attributesRenderer(cell, row, col, selected);
   // console.log(attrs);
-  const CellElement = row === 0 ? "th" : "td";
+  // const CellElement = row === 0 ? "th" : "td";
+  const CellElement = "div";
   return (
     <CellElement
       className={className}
@@ -31,7 +33,13 @@ const cellRenderer = ({
       onContextMenu={onContextMenu}
       {...attrs}
     >
-      <InnerCell row={row} col={col} cell={cell} editing={editing}>
+      <InnerCell
+        row={row}
+        col={col}
+        cell={cell}
+        editing={editing}
+        overflow={overflow}
+      >
         {children}
       </InnerCell>
     </CellElement>
