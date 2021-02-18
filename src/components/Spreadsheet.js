@@ -53,6 +53,11 @@ const Spreadsheet = () => {
 
     appDispatch({ type: "SET_ROWS", payload: grid.slice(1) });
   }
+
+  const handleSelect = (start, end) => {
+    console.log(start, end);
+  };
+
   return (
     <>
       <ReactDataSheet
@@ -61,6 +66,7 @@ const Spreadsheet = () => {
         cellRenderer={cellRenderer}
         attributesRenderer={attributesRenderer}
         onCellsChanged={handleCellsChanged}
+        onSelect={handleSelect}
       />
       <WideButton onClick={addRow} style={{ width: "auto", marginTop: "1rem" }}>
         Add Row
