@@ -3,10 +3,11 @@ import theme from "../theme";
 
 const CellValueDisplay = styled.div`
   height: 100%;
-  padding: 0.125rem 0.25rem;
-  color: ${(props) => (props.isValid ? theme.colors.text : "red")};
   display: flex;
   justify-content: stretch;
+  padding: ${theme.space.cellPaddingY} ${theme.space.cellPaddingX};
+  font-size: ${theme.fontSizes.cell}px;
+  color: ${(props) => (props.isValid ? theme.colors.text : "red")};
   text-align: ${(props) => props.align || "left"};
   ${(props) =>
     !props.isValid &&

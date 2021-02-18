@@ -8,12 +8,19 @@ const HeaderCellValueDisplayStyle = styled(CellValueDisplay)`
   color: ${theme.colors.text};
 `;
 
-const HeaderCellValueDisplay = ({ isValid, children, ...props }) => {
-  return (
-    <HeaderCellValueDisplayStyle isValid={true} align="center" {...props}>
-      {children}
-    </HeaderCellValueDisplayStyle>
-  );
-};
+const HeaderCellValueDisplay = React.forwardRef(
+  ({ isValid, children, ...props }, ref) => {
+    return (
+      <HeaderCellValueDisplayStyle
+        isValid={true}
+        align="center"
+        ref={ref}
+        {...props}
+      >
+        {children}
+      </HeaderCellValueDisplayStyle>
+    );
+  }
+);
 
 export default HeaderCellValueDisplay;

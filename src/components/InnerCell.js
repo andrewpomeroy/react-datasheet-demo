@@ -4,6 +4,7 @@ import HeaderCellValueDisplay from "./HeaderCellValueDisplay";
 import styled from "@emotion/styled";
 import validators from "../grid-model/validators";
 import { useAppState } from "../context/AppContext";
+import theme from "../theme";
 
 const InputContainer = styled.div`
   height: 100%;
@@ -11,12 +12,16 @@ const InputContainer = styled.div`
   input {
     height: 100%;
     width: ${(props) => props.width}px;
+    padding: ${theme.space.cellPaddingY} ${theme.space.cellPaddingX};
+    border: 0;
     text-align: ${(props) => props.align};
     /* position: fixed;
     top: 50%;
     left: 50%;
     width: 80px;
     height: 30px; */
+    outline: 1px solid black;
+    outline-style: auto;
   }
 `;
 

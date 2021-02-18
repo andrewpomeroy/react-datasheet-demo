@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useCallback } from "react";
 import ReactDataSheet from "react-datasheet";
-import cellRenderer from "./cellRenderer";
+import cellRenderer from "../renderers/cellRenderer";
 import { useAppContext } from "../context/AppContext";
 import WideButton from "./WideButton";
 import { makeBlankRow } from "../gridOperations";
+import attributesRenderer from "./attributesRenderer";
 
 const Spreadsheet = () => {
   const [appContext, appDispatch] = useAppContext();
@@ -52,13 +53,13 @@ const Spreadsheet = () => {
 
     appDispatch({ type: "SET_ROWS", payload: grid.slice(1) });
   }
-
   return (
     <>
       <ReactDataSheet
         data={gridState}
         valueRenderer={(cell) => cell.value || "\u00a0"}
         cellRenderer={cellRenderer}
+        attributesRenderer={attributesRenderer}
         onCellsChanged={handleCellsChanged}
       />
       <WideButton onClick={addRow} style={{ width: "auto", marginTop: "1rem" }}>
