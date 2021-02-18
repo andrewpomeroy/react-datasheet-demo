@@ -8,6 +8,11 @@ import attributesRenderer from "./attributesRenderer";
 
 const Spreadsheet = () => {
   const [appContext, appDispatch] = useAppContext();
+  const [selected, setSelected] = useState({
+    start: { i: 0, j: 0 },
+    end: { i: 0, j: 0 },
+  });
+  // const [forcedFocusItem, setForcedFocusItem] =
 
   const makeHeaderCells = useCallback((columnDefs) => {
     return [
@@ -54,8 +59,11 @@ const Spreadsheet = () => {
     appDispatch({ type: "SET_ROWS", payload: grid.slice(1) });
   }
 
-  const handleSelect = (start, end) => {
-    console.log(start, end);
+  const handleSelect = ({ start, end }) => {
+    // console.log({ start, end });
+    // console.log(gridState[start.i][start.j]);
+    // setForcedFocusItem([start.i, start.j])
+    setSelected({ start, end });
   };
 
   return (
@@ -67,6 +75,7 @@ const Spreadsheet = () => {
         attributesRenderer={attributesRenderer}
         onCellsChanged={handleCellsChanged}
         onSelect={handleSelect}
+        selected={selected}
       />
       <WideButton onClick={addRow} style={{ width: "auto", marginTop: "1rem" }}>
         Add Row
