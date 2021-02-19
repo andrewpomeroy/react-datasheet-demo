@@ -11,7 +11,7 @@ const InputContainer = styled.div`
   width: 100%;
   input {
     height: 100%;
-    width: ${(props) => props.width}px;
+    width: ${(props) => (props.inputWidth ? props.inputWidth + "px" : "auto")};
     padding: ${theme.space.cellPaddingY} ${theme.space.cellPaddingX};
     border: 0;
     text-align: ${(props) => props.align};
@@ -20,6 +20,8 @@ const InputContainer = styled.div`
     left: 50%;
     width: 80px;
     height: 30px; */
+    position: absolute;
+    z-index: 1;
     outline: 1px solid black;
     outline-style: auto;
   }
@@ -27,13 +29,25 @@ const InputContainer = styled.div`
 
 const InnerCell = ({ row, col, cell, children, editing }) => {
   const ref = useRef();
-  const [width, setWidth] = useState({});
+  const [inputWidth, setInputWidth] = useState();
   const appState = useAppState();
   useEffect(() => {
+    console.log("effect", ref.current);
     if (!editing && ref.current) {
-      setWidth(ref.current.getBoundingClientRect().width);
+      const containerRect = ref.current.getBoundingClientRect();
+      const textRect = ref.current
+        .getElementsByClassName("value-viewer")[0]
+        .getBoundingClientRect();
+      const containerPaddingX = parseInt(
+        window.getComputedStyle(ref.current).paddingRight,
+        10
+      );
+      const newWidth =
+        textRect.right > containerRect.right - containerPaddingX
+          ? textRect.width + containerPaddingX * 2
+          : containerRect.width;
+      setInputWidth(newWidth);
     }
-    // eslint-disable-next-line
   }, [editing]);
 
   let _validators = [];
@@ -50,14 +64,18 @@ const InnerCell = ({ row, col, cell, children, editing }) => {
     : "left";
 
   const DisplayComponent = isHeader ? HeaderCellValueDisplay : CellValueDisplay;
-  return editing ? (
-    <InputContainer width={width} align={align}>
-      {children}
-    </InputContainer>
-  ) : (
-    <DisplayComponent isValid={isValid} align={align} ref={ref}>
-      {children}
-    </DisplayComponent>
+  return (
+    <>
+      {editing ? (
+        <InputContainer inputWidth={inputWidth} align={align}>
+          {children}
+        </InputContainer>
+      ) : (
+        <DisplayComponent isValid={isValid} align={align} ref={ref}>
+          {children}
+        </DisplayComponent>
+      )}
+    </>
   );
 };
 

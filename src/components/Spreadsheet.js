@@ -5,6 +5,10 @@ import { useAppContext } from "../context/AppContext";
 import WideButton from "./WideButton";
 import { makeBlankRow } from "../gridOperations";
 import attributesRenderer from "./attributesRenderer";
+import PricingSheet from "./TestVirtualized";
+import { AutoSizer, Grid } from "react-virtualized";
+import DataCell from "react-datasheet/lib/DataCell";
+import VirtualizedSheet from "./VirtualizedSheet";
 
 const Spreadsheet = () => {
   const [appContext, appDispatch] = useAppContext();
@@ -55,22 +59,32 @@ const Spreadsheet = () => {
   }
 
   const handleSelect = (start, end) => {
-    console.log(start, end);
+    // console.log(start, end);
   };
 
   return (
     <>
-      <ReactDataSheet
+      {/* <ReactDataSheet
         data={gridState}
         valueRenderer={(cell) => cell.value || "\u00a0"}
         cellRenderer={cellRenderer}
         attributesRenderer={attributesRenderer}
         onCellsChanged={handleCellsChanged}
         onSelect={handleSelect}
+      /> */}
+      <VirtualizedSheet
+        data={gridState}
+        valueRenderer={(cell) => cell.value || "\u00a0"}
+        cellRenderer={cellRenderer}
+        attributesRenderer={attributesRenderer}
+        onCellsChanged={handleCellsChanged}
+        onSelect={handleSelect}
+        overflow="clip"
       />
       <WideButton onClick={addRow} style={{ width: "auto", marginTop: "1rem" }}>
         Add Row
       </WideButton>
+      {/* <PricingSheet /> */}
     </>
   );
 };
