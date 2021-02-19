@@ -57,20 +57,12 @@ html,
   display: block;
 }
 
-.data-grid {
-  background-color: white;
-}
-
-th {
-  position: sticky;
-  top: -1px;
-}
-
-.cell,
-.data-grid {
-  outline: none;
-}
-
 .data-grid-container--virtualized .data-grid .cell {
   height: 100%;
+}
+
+.data-grid,
+.data-grid-container .data-grid .cell {
+  background-color: white;
+  outline: none;
 }
