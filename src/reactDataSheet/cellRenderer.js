@@ -1,5 +1,5 @@
 import React from "react";
-import InnerCell from "../components/InnerCell";
+import InnerCell from "./InnerCell";
 
 const cellRenderer = ({
   children,

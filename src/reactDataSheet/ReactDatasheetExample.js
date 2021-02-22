@@ -1,16 +1,12 @@
 import React, { useState, useEffect, useCallback } from "react";
-import ReactDataSheet from "react-datasheet";
-import cellRenderer from "../renderers/cellRenderer";
+import cellRenderer from "./cellRenderer";
 import { useAppContext } from "../context/AppContext";
-import WideButton from "./WideButton";
+import WideButton from "../components/WideButton";
 import { makeBlankRow } from "../gridOperations";
 import attributesRenderer from "./attributesRenderer";
-import PricingSheet from "./TestVirtualized";
-import { AutoSizer, Grid } from "react-virtualized";
-import DataCell from "react-datasheet/lib/DataCell";
 import VirtualizedSheet from "./VirtualizedSheet";
 
-const Spreadsheet = () => {
+const ReactDatasheetExample = () => {
   const [appContext, appDispatch] = useAppContext();
 
   const makeHeaderCells = useCallback((columnDefs) => {
@@ -33,10 +29,6 @@ const Spreadsheet = () => {
     setGridState([makeHeaderCells(appContext.columnDefs), ...appContext.rows]);
     // eslint-disable-next-line
   }, [appContext, makeHeaderCells]);
-
-  function addRow() {
-    appDispatch({ type: "ADD_ROW" });
-  }
 
   function handleCellsChanged(changes, additions) {
     const grid = gridState.map((row) => [...row]);
@@ -81,12 +73,14 @@ const Spreadsheet = () => {
         onSelect={handleSelect}
         overflow="clip"
       />
-      <WideButton onClick={addRow} style={{ width: "auto", marginTop: "1rem" }}>
+      <WideButton
+        onClick={() => appDispatch({ type: "ADD_ROW" })}
+        style={{ width: "auto", marginTop: "1rem" }}
+      >
         Add Row
       </WideButton>
-      {/* <PricingSheet /> */}
     </>
   );
 };
 
-export default Spreadsheet;
+export default ReactDatasheetExample;

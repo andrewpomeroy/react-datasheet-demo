@@ -6,7 +6,7 @@ import {
   makeBlankCell,
 } from "../gridOperations";
 
-const INIT_ROW_COUNT = 15;
+const INIT_ROW_COUNT = 500;
 
 export const AppStateContext = React.createContext({});
 export const AppDispatchContext = React.createContext({});
@@ -70,7 +70,10 @@ const columnDefs = [
     inputType: "string",
     makeMockEntry: faker.commerce.department,
   },
-];
+].map((x) => ({
+  ...x,
+  key: x.id,
+}));
 
 function makeMockDataRow() {
   return columnDefs
@@ -88,11 +91,13 @@ const initialState = {
 
 const NewColumnTemplate = () => {
   const word = faker.random.word();
-  return {
+  const col = {
     name: [word.slice(0, 1).toUpperCase(), word.slice(1)].join(""),
     id: word.trim().toLowerCase(),
     inputType: "string",
   };
+  col.key = col.id;
+  return col;
 };
 
 export const AppContextProvider = (props) => {

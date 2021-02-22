@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useContext } from "react";
 import styled from "@emotion/styled";
 import { useAppState, useAppDispatch } from "../context/AppContext";
-import WideButton from "./WideButton";
+import WideButton from "../components/WideButton";
 
 const Container = styled.div`
   /* background-color: #464646; */

@@ -2,7 +2,7 @@ import React, { useRef, useState, useEffect } from "react";
 import CellValueDisplay from "./CellValueDisplay";
 import HeaderCellValueDisplay from "./HeaderCellValueDisplay";
 import styled from "@emotion/styled";
-import validators from "../grid-model/validators";
+import validators from "./validators";
 import { useAppState } from "../context/AppContext";
 import theme from "../theme";
 

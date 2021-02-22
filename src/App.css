@@ -15,7 +15,7 @@ html,
   flex: 1;
   width: 100%;
   height: 100vh;
-  background-color: hsl(0, 0%, 94%);
+  background-color: hsl(0, 0%, 97%);
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -26,12 +26,35 @@ html,
   flex: 1;
 }
 
+.Navbar {
+  flex: 0 0 auto;
+  display: flex;
+  padding: 0.25rem 1.5rem 0;
+}
+
+.Navbar-item:not(:first-child) {
+  margin-left: 1em;
+}
+
+.Navbar-item a {
+  display: block;
+  padding: 4px 0;
+  text-decoration: none;
+  color: black;
+  border-bottom: 3px solid gainsboro;
+}
+.Navbar-item a.active {
+  color: black;
+  border-bottom-color: dodgerblue;
+}
+
 .Columns {
   display: flex;
   align-items: flex-start;
-  height: 100%;
+  flex: 1;
   width: calc(100% - 1rem);
   margin: 0 -0.5rem;
+  overflow: hidden;
 }
 
 .Column {
@@ -48,6 +71,10 @@ html,
   /* align-items: center; */
   align-items: flex-start;
 }
+
+/*  */
+/* BEGIN react-datasheet styles */
+/*  */
 
 .data-grid-container {
   /* max-height: 360px;
