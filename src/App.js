@@ -10,6 +10,7 @@ import "./App.css";
 import Spreadsheet from "./reactDataSheet/ReactDatasheetExample";
 import TableDefinitionControls from "./reactDataSheet/TableDefinitionControls";
 import { AppContextProvider } from "./context/AppContext";
+import { CommonFeatures } from "./reactDataGrid/CommonFeatures";
 
 function App() {
   return (
@@ -39,7 +40,7 @@ function App() {
                   <Spreadsheet />
                 </Route>
                 <Route path="/react-data-grid">
-                  <Spreadsheet />
+                  <CommonFeatures />
                 </Route>
               </Switch>
             </div>
