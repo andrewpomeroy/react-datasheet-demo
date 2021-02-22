@@ -21,12 +21,15 @@ const ReactDatasheetExample = () => {
 
   const gridInitialState = [
     makeHeaderCells(appContext.columnDefs),
-    ...appContext.rows,
+    ...appContext.arrayRows,
   ];
   const [gridState, setGridState] = useState(gridInitialState);
 
   useEffect(() => {
-    setGridState([makeHeaderCells(appContext.columnDefs), ...appContext.rows]);
+    setGridState([
+      makeHeaderCells(appContext.columnDefs),
+      ...appContext.arrayRows,
+    ]);
     // eslint-disable-next-line
   }, [appContext, makeHeaderCells]);
 
@@ -73,12 +76,6 @@ const ReactDatasheetExample = () => {
         onSelect={handleSelect}
         overflow="clip"
       />
-      <WideButton
-        onClick={() => appDispatch({ type: "ADD_ROW" })}
-        style={{ width: "auto", marginTop: "1rem" }}
-      >
-        Add Row
-      </WideButton>
     </>
   );
 };

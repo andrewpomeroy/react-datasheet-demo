@@ -6,7 +6,7 @@ import {
   makeBlankCell,
 } from "../gridOperations";
 
-const INIT_ROW_COUNT = 500;
+const INIT_ROW_COUNT = 10;
 
 export const AppStateContext = React.createContext({});
 export const AppDispatchContext = React.createContext({});
@@ -22,20 +22,24 @@ const appReducer = (state, action) => {
     case "ADD_COL": {
       return {
         ...state,
-        rows: state.rows.map((row) => [...row, makeBlankCell()]),
+        arrayRows: state.arrayRows.map((row) => [...row, makeBlankCell()]),
         columnDefs: [...state.columnDefs, NewColumnTemplate()],
       };
     }
     case "SET_ROWS": {
       return {
         ...state,
-        rows: action.payload,
+        arrayRows: action.payload,
       };
     }
     case "ADD_ROW": {
       return {
         ...state,
-        rows: [...state.rows, makeBlankRow(state.columnDefs.length)],
+        arrayRows: [...state.arrayRows, makeBlankRow(state.columnDefs.length)],
+        objectRows: [
+          ...state.objectRows,
+          makeBlankRow(state.columnDefs.length),
+        ],
       };
     }
     default: {
@@ -75,7 +79,7 @@ const columnDefs = [
   key: x.id,
 }));
 
-function makeMockDataRow() {
+function makeMockArrayRow() {
   return columnDefs
     .map((col) => {
       if (col.makeMockEntry) return col.makeMockEntry();
@@ -84,9 +88,18 @@ function makeMockDataRow() {
     .map((val) => ({ value: val }));
 }
 
+function makeMockObjectRow() {
+  return columnDefs.reduce((row, columnDef) => {
+    row.key = [columnDef.id];
+    if (columnDef.makeMockEntry) row[columnDef.key] = columnDef.makeMockEntry();
+    return row;
+  }, {});
+}
+
 const initialState = {
   columnDefs,
-  rows: [...Array(INIT_ROW_COUNT).keys()].map(makeMockDataRow),
+  objectRows: [...Array(INIT_ROW_COUNT).keys()].map(makeMockObjectRow),
+  arrayRows: [...Array(INIT_ROW_COUNT).keys()].map(makeMockArrayRow),
 };
 
 const NewColumnTemplate = () => {
@@ -99,6 +112,9 @@ const NewColumnTemplate = () => {
   col.key = col.id;
   return col;
 };
+
+export const AppContextConsumer = AppStateContext.Consumer;
+export const AppDispatchConsumer = AppDispatchContext.Consumer;
 
 export const AppContextProvider = (props) => {
   const [state, dispatch] = React.useReducer(appReducer, initialState);

@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import "react-datasheet/lib/react-datasheet.css";
+import Measure from "react-measure";
 import {
   BrowserRouter as Router,
   NavLink,
@@ -9,10 +10,17 @@ import {
 import "./App.css";
 import Spreadsheet from "./reactDataSheet/ReactDatasheetExample";
 import TableDefinitionControls from "./reactDataSheet/TableDefinitionControls";
-import { AppContextProvider } from "./context/AppContext";
+import {
+  AppDispatchConsumer,
+  AppContextProvider,
+  useAppContext,
+} from "./context/AppContext";
 import { CommonFeatures } from "./reactDataGrid/CommonFeatures";
+import ReactDataGridExample from "./reactDataGrid/ReactDataGridExample";
+import WideButton from "./components/WideButton";
 
 function App() {
+  const [usableHeight, setUsableHeight] = useState(0);
   return (
     <AppContextProvider>
       <Router>
@@ -35,14 +43,48 @@ function App() {
               <TableDefinitionControls />
             </div>
             <div className="Column Column--grid">
-              <Switch>
-                <Route path="/react-datasheet">
-                  <Spreadsheet />
-                </Route>
-                <Route path="/react-data-grid">
-                  <CommonFeatures />
-                </Route>
-              </Switch>
+              <Measure
+                bounds
+                onResize={(contentRect) => {
+                  setUsableHeight(contentRect.bounds.height);
+                }}
+              >
+                {({ measureRef }) => (
+                  <div
+                    ref={measureRef}
+                    style={{
+                      flex: 1,
+                      width: "100%",
+                      display: "flex",
+                      flexDirection: "column",
+                    }}
+                  >
+                    <Switch>
+                      <Route path="/react-datasheet">
+                        <Spreadsheet />
+                      </Route>
+                      <Route path="/react-data-grid">
+                        <ReactDataGridExample height={usableHeight} />
+                      </Route>
+                    </Switch>
+                  </div>
+                )}
+              </Measure>
+              <div>
+                <AppDispatchConsumer>
+                  {(dispatch) => {
+                    console.log(dispatch);
+                    return (
+                      <WideButton
+                        onClick={() => dispatch({ type: "ADD_ROW" })}
+                        style={{ width: "auto", marginTop: "1rem" }}
+                      >
+                        Add Row
+                      </WideButton>
+                    );
+                  }}
+                </AppDispatchConsumer>
+              </div>
             </div>
           </div>
         </div>
