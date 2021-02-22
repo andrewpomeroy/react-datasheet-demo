@@ -61,8 +61,21 @@ html,
   height: 100%;
 }
 
-.data-grid,
+.data-grid-container .data-grid,
 .data-grid-container .data-grid .cell {
-  background-color: white;
   outline: none;
 }
+.data-grid-container .data-grid .cell,
+.data-grid-container .data-grid .cell.selected {
+  border: 1px solid gainsboro;
+  border-bottom: 0;
+  border-right: 0;
+}
+.data-grid-container .data-grid .cell.selected {
+  outline: 1px solid rgb(33, 133, 208);
+  outline-offset: -1px;
+}
+/* doesn't work */
+/* .data-grid-container .data-grid {
+  border-right: 1px solid gainsboro;
+} */

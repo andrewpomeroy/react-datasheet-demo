@@ -8,6 +8,10 @@ const StyledGrid = styled(Grid)`
   outline: none;
 `;
 
+const DataCellWrapper = styled.div`
+  background-color: white;
+`;
+
 class VirtualizedSheet extends ReactDataSheet {
   _setState(state) {
     super._setState(state);
@@ -51,7 +55,7 @@ class VirtualizedSheet extends ReactDataSheet {
                 tabIndex={-1}
                 cellRenderer={({ key, rowIndex, columnIndex, style }) => {
                   return (
-                    <div key={key} style={style}>
+                    <DataCellWrapper key={key} style={style}>
                       <DataCell
                         row={rowIndex}
                         col={columnIndex}
@@ -77,7 +81,7 @@ class VirtualizedSheet extends ReactDataSheet {
                         // onCellsChanged={handleCellsChanged}
                         // onSelect={handleSelect}
                       />
-                    </div>
+                    </DataCellWrapper>
                   );
                 }}
                 columnWidth={120}
