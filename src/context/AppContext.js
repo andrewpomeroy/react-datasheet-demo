@@ -7,8 +7,9 @@ import {
   makeMockDataRows,
 } from "../gridOperations";
 
-const INIT_ROW_COUNT = 200;
-const INIT_COL_COUNT = 50;
+const INIT_ROW_COUNT = 10;
+// const INIT_GENERATED_COL_COUNT = 50;
+const INIT_GENERATED_COL_COUNT = 4;
 
 export const AppStateContext = React.createContext({});
 export const AppDispatchContext = React.createContext({});
@@ -37,7 +38,7 @@ const appReducer = (state, action) => {
     case "ADD_ROW": {
       return {
         ...state,
-        rows: [...state.rows, ...makeBlankRows(state.columnDefs.length)],
+        rows: [...state.rows, ...makeBlankRows(1, state.columnDefs.length)],
       };
     }
     case "ADD_MOCK_ROWS": {
@@ -96,7 +97,7 @@ const NewColumnTemplate = () => {
 const initialState = {
   columnDefs: [
     ...columnDefs,
-    ...[...Array(INIT_COL_COUNT - 4).keys()].map(NewColumnTemplate),
+    ...[...Array(INIT_GENERATED_COL_COUNT).keys()].map(NewColumnTemplate),
   ],
 };
 initialState.rows = makeMockDataRows(INIT_ROW_COUNT, initialState.columnDefs);

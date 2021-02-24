@@ -82,13 +82,13 @@ const Spreadsheet = () => {
         onClick={() => appDispatch({ type: "ADD_ROW" })}
         style={{ width: "auto", marginTop: "1rem" }}
       >
-        Add Row
+        Add Blank Row
       </WideButton>
       <WideButton
         onClick={() =>
           appDispatch({ type: "ADD_MOCK_ROWS", payload: { count: 1 } })
         }
-        style={{ width: "auto", marginTop: "1rem" }}
+        style={{ width: "auto", marginTop: ".5rem" }}
       >
         Add Mock Row
       </WideButton>
