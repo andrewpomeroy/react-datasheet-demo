@@ -3,12 +3,13 @@ import ReactDataSheet from "react-datasheet";
 import cellRenderer from "../renderers/cellRenderer";
 import { useAppContext } from "../context/AppContext";
 import WideButton from "./WideButton";
-import { makeBlankRow } from "../gridOperations";
+import { makeBlankRows, makeMockDataRows } from "../gridOperations";
 import attributesRenderer from "./attributesRenderer";
 import PricingSheet from "./TestVirtualized";
 import { AutoSizer, Grid } from "react-virtualized";
 import DataCell from "react-datasheet/lib/DataCell";
 import VirtualizedSheet from "./VirtualizedSheet";
+import { useMount } from "react-use";
 
 const Spreadsheet = () => {
   const [appContext, appDispatch] = useAppContext();
@@ -34,10 +35,6 @@ const Spreadsheet = () => {
     // eslint-disable-next-line
   }, [appContext, makeHeaderCells]);
 
-  function addRow() {
-    appDispatch({ type: "ADD_ROW" });
-  }
-
   function handleCellsChanged(changes, additions) {
     const grid = gridState.map((row) => [...row]);
     changes.forEach(({ cell, row, col, value }) => {
@@ -48,7 +45,7 @@ const Spreadsheet = () => {
     additions &&
       additions.forEach(({ cell, row, col, value }) => {
         if (!grid[row]) {
-          grid[row] = makeBlankRow(appContext.columnDefs.length);
+          grid[row] = makeBlankRows(1, appContext.columnDefs.length)[0];
         }
         if (grid[row][col]) {
           grid[row][col] = { ...grid[row][col], value };
@@ -81,8 +78,19 @@ const Spreadsheet = () => {
         onSelect={handleSelect}
         overflow="clip"
       />
-      <WideButton onClick={addRow} style={{ width: "auto", marginTop: "1rem" }}>
+      <WideButton
+        onClick={() => appDispatch({ type: "ADD_ROW" })}
+        style={{ width: "auto", marginTop: "1rem" }}
+      >
         Add Row
+      </WideButton>
+      <WideButton
+        onClick={() =>
+          appDispatch({ type: "ADD_MOCK_ROWS", payload: { count: 1 } })
+        }
+        style={{ width: "auto", marginTop: "1rem" }}
+      >
+        Add Mock Row
       </WideButton>
       {/* <PricingSheet /> */}
     </>

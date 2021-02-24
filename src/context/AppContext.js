@@ -2,11 +2,13 @@ import React from "react";
 import faker from "faker";
 import {
   changeColumnDefProp,
-  makeBlankRow,
   makeBlankCell,
+  makeBlankRows,
+  makeMockDataRows,
 } from "../gridOperations";
 
-const INIT_ROW_COUNT = 15;
+const INIT_ROW_COUNT = 200;
+const INIT_COL_COUNT = 50;
 
 export const AppStateContext = React.createContext({});
 export const AppDispatchContext = React.createContext({});
@@ -35,7 +37,16 @@ const appReducer = (state, action) => {
     case "ADD_ROW": {
       return {
         ...state,
-        rows: [...state.rows, makeBlankRow(state.columnDefs.length)],
+        rows: [...state.rows, ...makeBlankRows(state.columnDefs.length)],
+      };
+    }
+    case "ADD_MOCK_ROWS": {
+      return {
+        ...state,
+        rows: [
+          ...state.rows,
+          ...makeMockDataRows(action.payload?.count || 1, state.columnDefs),
+        ],
       };
     }
     default: {
@@ -72,28 +83,23 @@ const columnDefs = [
   },
 ];
 
-function makeMockDataRow() {
-  return columnDefs
-    .map((col) => {
-      if (col.makeMockEntry) return col.makeMockEntry();
-      else return null;
-    })
-    .map((val) => ({ value: val }));
-}
-
-const initialState = {
-  columnDefs,
-  rows: [...Array(INIT_ROW_COUNT).keys()].map(makeMockDataRow),
-};
-
 const NewColumnTemplate = () => {
   const word = faker.random.word();
   return {
     name: [word.slice(0, 1).toUpperCase(), word.slice(1)].join(""),
     id: word.trim().toLowerCase(),
     inputType: "string",
+    makeMockEntry: faker.name.findName,
   };
 };
+
+const initialState = {
+  columnDefs: [
+    ...columnDefs,
+    ...[...Array(INIT_COL_COUNT - 4).keys()].map(NewColumnTemplate),
+  ],
+};
+initialState.rows = makeMockDataRows(INIT_ROW_COUNT, initialState.columnDefs);
 
 export const AppContextProvider = (props) => {
   const [state, dispatch] = React.useReducer(appReducer, initialState);
