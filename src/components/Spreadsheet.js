@@ -1,19 +1,18 @@
 import React, { useState, useEffect, useCallback } from "react";
-import ReactDataSheet from "react-datasheet";
 import cellRenderer from "../renderers/cellRenderer";
 import { useAppContext } from "../context/AppContext";
 import WideButton from "./WideButton";
-import { makeBlankRows, makeMockDataRows } from "../gridOperations";
+import { makeBlankRows } from "../gridOperations";
 import attributesRenderer from "./attributesRenderer";
-import PricingSheet from "./TestVirtualized";
-import { AutoSizer, Grid } from "react-virtualized";
-import DataCell from "react-datasheet/lib/DataCell";
 import VirtualizedSheet from "./VirtualizedSheet";
-import cellEditor from "../renderers/cellEditor";
-import DataEditor from "react-datasheet/lib/DataEditor";
 
 const Spreadsheet = () => {
   const [appContext, appDispatch] = useAppContext();
+
+  const [selected, setSelected] = useState({
+    start: { i: 0, j: 0 },
+    end: { i: 0, j: 0 },
+  });
 
   const makeHeaderCells = useCallback((columnDefs) => {
     return [
@@ -38,11 +37,12 @@ const Spreadsheet = () => {
 
   function handleCellsChanged(changes, additions) {
     const grid = gridState.map((row) => [...row]);
+    // Here, we could run validation on each value, and reject values that, say, don't align with lookup values, for example.
     changes.forEach(({ cell, row, col, value }) => {
       grid[row][col] = { ...grid[row][col], value };
     });
 
-    // If a paste operation goes beyond the bounds of the existing rows, add a new row for each required
+    // If a paste operation goes beyond the bounds of the existing rows, add however many rows are necessary to accommodate
     additions &&
       additions.forEach(({ cell, row, col, value }) => {
         if (!grid[row]) {
@@ -56,10 +56,12 @@ const Spreadsheet = () => {
     appDispatch({ type: "SET_ROWS", payload: grid.slice(1) });
   }
 
+  // Keeping controlled-selection enabled for now, even though it lowers performance a bit, since we'll have to use it at some point.
+  // (we need to keep performance expectations realistic as we move forward)
   const handleSelect = ({ start, end }) => {
-    // TODO: add focus management to make sure that the most recent *single* cell selected receives browser focus.
-    // Currently it seems a little spotty when making range selections.
-    console.log(start, end);
+    // TODO: add focus management to make sure that the most recently selected *single* cell receives browser focus.
+    // Natively, the "selected" cell loses focus after confirming a cell edit.
+    setSelected({ start, end });
   };
 
   return (
@@ -75,20 +77,22 @@ const Spreadsheet = () => {
         onSelect={handleSelect}
         overflow="clip"
       />
-      <WideButton
-        onClick={() => appDispatch({ type: "ADD_ROW" })}
-        style={{ width: "auto", marginTop: "1rem" }}
-      >
-        Add Blank Row
-      </WideButton>
-      <WideButton
-        onClick={() =>
-          appDispatch({ type: "ADD_MOCK_ROWS", payload: { count: 1 } })
-        }
-        style={{ width: "auto", marginTop: ".5rem" }}
-      >
-        Add Row w/ Fake Data
-      </WideButton>
+      <div style={{ display: "flex", marginTop: ".5rem" }}>
+        <WideButton
+          onClick={() => appDispatch({ type: "ADD_ROW" })}
+          style={{ width: "auto", marginRight: ".5rem" }}
+        >
+          Add Blank Row
+        </WideButton>
+        <WideButton
+          onClick={() =>
+            appDispatch({ type: "ADD_MOCK_ROWS", payload: { count: 1 } })
+          }
+          style={{ width: "auto" }}
+        >
+          Add Row w/ Fake Data
+        </WideButton>
+      </div>
     </>
   );
 };

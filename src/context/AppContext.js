@@ -7,9 +7,8 @@ import {
   makeMockDataRows,
 } from "../gridOperations";
 
-const INIT_ROW_COUNT = 10;
-// const INIT_GENERATED_COL_COUNT = 50;
-const INIT_GENERATED_COL_COUNT = 4;
+const INIT_ROW_COUNT = 40;
+const INIT_GENERATED_COL_COUNT = 6;
 
 export const AppStateContext = React.createContext({});
 export const AppDispatchContext = React.createContext({});

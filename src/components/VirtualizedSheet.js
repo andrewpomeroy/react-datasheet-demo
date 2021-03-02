@@ -29,7 +29,6 @@ class VirtualizedSheet extends ReactDataSheet {
       valueRenderer,
       dataRenderer,
       valueViewer,
-      dataEditor,
       overflow,
       className,
       data,
