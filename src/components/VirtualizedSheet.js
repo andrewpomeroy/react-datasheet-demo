@@ -3,6 +3,7 @@ import React from "react";
 import ReactDataSheet from "react-datasheet";
 import DataCell from "react-datasheet/lib/DataCell";
 import { AutoSizer, Grid } from "react-virtualized";
+import cellEditor from "../renderers/cellEditor";
 
 const StyledGrid = styled(Grid)`
   outline: none;
@@ -12,6 +13,8 @@ const DataCellWrapper = styled.div`
   background-color: white;
 `;
 
+// I've taken most of this from a virtualized-grid POC: https://gist.github.com/hoan006/e982c5fda491c29c25bb69020f328a1f
+// I reduced it quite a bit, removing MultiGrid for Grid, but we'll need to go back to using MultiGrid and possibly `react-scrollsync` to achieve sticky-headers
 class VirtualizedSheet extends ReactDataSheet {
   _setState(state) {
     super._setState(state);
@@ -74,7 +77,7 @@ class VirtualizedSheet extends ReactDataSheet {
                         clearing={this.isClearing(rowIndex, columnIndex)}
                         dataRenderer={dataRenderer}
                         valueViewer={valueViewer}
-                        dataEditor={dataEditor}
+                        dataEditor={cellEditor}
                         valueRenderer={valueRenderer}
                         cellRenderer={cellRenderer}
                         attributesRenderer={attributesRenderer}

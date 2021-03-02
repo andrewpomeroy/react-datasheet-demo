@@ -6,6 +6,8 @@ import validators from "../grid-model/validators";
 import { useAppState } from "../context/AppContext";
 import theme from "../theme";
 
+// This stuff may want to be moved to a component specific to text editing
+// The idea being to keep InnerCell as generic as possible
 const InputContainer = styled.div`
   height: 100%;
   width: 100%;

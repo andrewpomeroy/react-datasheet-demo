@@ -9,7 +9,8 @@ import PricingSheet from "./TestVirtualized";
 import { AutoSizer, Grid } from "react-virtualized";
 import DataCell from "react-datasheet/lib/DataCell";
 import VirtualizedSheet from "./VirtualizedSheet";
-import { useMount } from "react-use";
+import cellEditor from "../renderers/cellEditor";
+import DataEditor from "react-datasheet/lib/DataEditor";
 
 const Spreadsheet = () => {
   const [appContext, appDispatch] = useAppContext();
@@ -41,7 +42,7 @@ const Spreadsheet = () => {
       grid[row][col] = { ...grid[row][col], value };
     });
 
-    // paste extended beyond end, so add a new row
+    // If a paste operation goes beyond the bounds of the existing rows, add a new row for each required
     additions &&
       additions.forEach(({ cell, row, col, value }) => {
         if (!grid[row]) {
@@ -55,23 +56,19 @@ const Spreadsheet = () => {
     appDispatch({ type: "SET_ROWS", payload: grid.slice(1) });
   }
 
-  const handleSelect = (start, end) => {
-    // console.log(start, end);
+  const handleSelect = ({ start, end }) => {
+    // TODO: add focus management to make sure that the most recent *single* cell selected receives browser focus.
+    // Currently it seems a little spotty when making range selections.
+    console.log(start, end);
   };
 
   return (
     <>
-      {/* <ReactDataSheet
-        data={gridState}
-        valueRenderer={(cell) => cell.value || "\u00a0"}
-        cellRenderer={cellRenderer}
-        attributesRenderer={attributesRenderer}
-        onCellsChanged={handleCellsChanged}
-        onSelect={handleSelect}
-      /> */}
       <VirtualizedSheet
         data={gridState}
+        // \u00a0 is the non-breaking-space unicode character, we use it here to ensure that a text node is still generated in an empty cell (so it doesn't collapse in on itself)
         valueRenderer={(cell) => cell.value || "\u00a0"}
+        // dataEditor={DataEditor}
         cellRenderer={cellRenderer}
         attributesRenderer={attributesRenderer}
         onCellsChanged={handleCellsChanged}
@@ -90,9 +87,8 @@ const Spreadsheet = () => {
         }
         style={{ width: "auto", marginTop: ".5rem" }}
       >
-        Add Mock Row
+        Add Row w/ Fake Data
       </WideButton>
-      {/* <PricingSheet /> */}
     </>
   );
 };
