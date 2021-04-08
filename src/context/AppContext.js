@@ -6,7 +6,7 @@ import {
   makeBlankCell,
 } from "../gridOperations";
 
-const INIT_ROW_COUNT = 10;
+const INIT_ROW_COUNT = 1000;
 
 export const AppStateContext = React.createContext({});
 export const AppDispatchContext = React.createContext({});

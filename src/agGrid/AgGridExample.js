@@ -1,29 +1,34 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AgGridReact, AgGridColumn } from "ag-grid-react";
+import { useAppContext } from "../context/AppContext";
 import "ag-grid-enterprise";
 import "ag-grid-community/dist/styles/ag-grid.css";
-import "ag-grid-community/dist/styles/ag-theme-alpine.css";
+import "ag-grid-community/dist/styles/ag-theme-balham.css";
 
 const AgGridExample = () => {
+  const [isGridReady, setIsGridReady] = useState(null);
   const [gridApi, setGridApi] = useState(null);
   const [gridColumnApi, setGridColumnApi] = useState(null);
   const [rowData, setRowData] = useState(null);
+  const [appContext, appDispatch] = useAppContext();
+
+  const updateData = (data) => {
+    setRowData(data);
+  };
+
+  console.log(appContext.columnDefs);
 
   const onGridReady = (params) => {
     setGridApi(params.api);
     setGridColumnApi(params.columnApi);
-
-    const updateData = (data) => {
-      setRowData(data);
-    };
-
-    fetch("https://www.ag-grid.com/example-assets/olympic-winners.json")
-      .then((resp) => resp.json())
-      .then((data) => {
-        updateData(data);
-        console.log(data);
-      });
+    setIsGridReady(true);
   };
+
+  useEffect(() => {
+    if (isGridReady) {
+      setRowData(appContext.objectRows);
+    }
+  }, [appContext.objectRows, isGridReady]);
 
   return (
     <div style={{ width: "100%", height: "100%" }}>
@@ -33,29 +38,27 @@ const AgGridExample = () => {
           height: "100%",
           width: "100%",
         }}
-        className="ag-theme-alpine"
+        className="ag-theme-balham"
       >
         <AgGridReact
           defaultColDef={{
             flex: 1,
-            minWidth: 100,
+            minWidth: 200,
             editable: true,
+            suppressMovable: true,
+            lockPinned: true,
+            resizable: true,
           }}
           enableRangeSelection={true}
           suppressMultiRangeSelection={true}
           onGridReady={onGridReady}
           rowData={rowData}
         >
-          <AgGridColumn field="athlete" minWidth={150} />
-          <AgGridColumn field="age" maxWidth={90} />
-          <AgGridColumn field="country" minWidth={150} />
-          <AgGridColumn field="year" maxWidth={90} />
-          <AgGridColumn field="date" minWidth={150} />
-          <AgGridColumn field="sport" minWidth={150} />
-          <AgGridColumn field="gold" />
-          <AgGridColumn field="silver" />
-          <AgGridColumn field="bronze" />
-          <AgGridColumn field="total" />
+          <>
+            {appContext.columnDefs.map((x) => (
+              <AgGridColumn field={x.id} />
+            ))}
+          </>
         </AgGridReact>
       </div>
     </div>
