@@ -12,10 +12,6 @@ const AgGridExample = () => {
   const [rowData, setRowData] = useState(null);
   const [appContext, appDispatch] = useAppContext();
 
-  const updateData = (data) => {
-    setRowData(data);
-  };
-
   console.log(appContext.columnDefs);
 
   const onGridReady = (params) => {
@@ -41,6 +37,10 @@ const AgGridExample = () => {
         className="ag-theme-balham"
       >
         <AgGridReact
+          columnDefs={appContext.columnDefs.map((x) => ({
+            headerName: x.name,
+            field: x.id,
+          }))}
           defaultColDef={{
             flex: 1,
             minWidth: 200,
@@ -53,13 +53,7 @@ const AgGridExample = () => {
           suppressMultiRangeSelection={true}
           onGridReady={onGridReady}
           rowData={rowData}
-        >
-          <>
-            {appContext.columnDefs.map((x) => (
-              <AgGridColumn field={x.id} />
-            ))}
-          </>
-        </AgGridReact>
+        />
       </div>
     </div>
   );
