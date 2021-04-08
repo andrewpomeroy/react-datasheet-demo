@@ -32,7 +32,6 @@ const InnerCell = ({ row, col, cell, children, editing }) => {
   const [inputWidth, setInputWidth] = useState();
   const appState = useAppState();
   useEffect(() => {
-    console.log("effect", ref.current);
     if (!editing && ref.current) {
       const containerRect = ref.current.getBoundingClientRect();
       const textRect = ref.current

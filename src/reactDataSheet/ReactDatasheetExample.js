@@ -57,6 +57,8 @@ const ReactDatasheetExample = () => {
     // console.log(start, end);
   };
 
+  console.log(gridState);
+
   return (
     <>
       {/* <ReactDataSheet

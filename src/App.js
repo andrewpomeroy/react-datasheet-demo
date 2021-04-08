@@ -18,6 +18,7 @@ import {
 import { CommonFeatures } from "./reactDataGrid/CommonFeatures";
 import ReactDataGridExample from "./reactDataGrid/ReactDataGridExample";
 import WideButton from "./components/WideButton";
+import AgGridExample from "./agGrid/AgGridExample";
 
 function App() {
   const [usableHeight, setUsableHeight] = useState(0);
@@ -35,6 +36,11 @@ function App() {
             <div className="Navbar-item">
               <NavLink to="/react-data-grid" activeClassName="active">
                 react-data-grid
+              </NavLink>
+            </div>
+            <div className="Navbar-item">
+              <NavLink to="/ag-grid" activeClassName="active">
+                ag-grid
               </NavLink>
             </div>
           </div>
@@ -65,6 +71,9 @@ function App() {
                       </Route>
                       <Route path="/react-data-grid">
                         <ReactDataGridExample height={usableHeight} />
+                      </Route>
+                      <Route path="/ag-grid">
+                        <AgGridExample height={usableHeight} />
                       </Route>
                     </Switch>
                   </div>

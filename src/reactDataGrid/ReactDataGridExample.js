@@ -19,6 +19,8 @@ export function ReactDataGridExample({ height }) {
       }))
     : [];
 
+  console.log(columns, appContext?.columnDefs);
+
   return (
     appContext.columnDefs && (
       <ReactDataGrid
